@@ -1,0 +1,74 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-plus-circle"></i> Add New Post</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title"><i class="fas fa-heading"></i> Title</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="Enter post title" required>
+                </div>
+
+                <!-- Slug -->
+                <div class="form-group">
+                    <label for="slug"><i class="fas fa-link"></i> Slug</label>
+                    <input type="text" id="slug" name="slug" class="form-control" placeholder="Enter unique slug" required>
+                    <small class="form-text text-muted">
+                        Slug should be unique, lowercase, and hyphen-separated.
+                    </small>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category"><i class="fas fa-folder-open"></i> Category</label>
+                    <select class="form-control" id="category" name="category">
+                        <option value="">Select Category</option>
+                        {% for c in categories %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tag (single select) -->
+                <div class="form-group">
+                    <label for="tag"><i class="fas fa-tags"></i> Tag</label>
+                    <select name="tag" class="form-control">
+                        <option value="">Select Tag</option>
+                        {% for tag in tags %}
+                        <option value="{{ tag.id }}" {% if tag_id == tag.id %}selected{% endif %}>
+                            {{ tag.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Content -->
+                <div class="form-group">
+                    <label for="content"><i class="fas fa-align-left"></i> Content</label>
+                    <textarea class="form-control" id="content" name="content" rows="10"
+                              placeholder="Write your post here... Use normal HTML formatting (b, i, u, sub, sup, math)."></textarea>
+                    <small class="form-text text-muted">
+                        All content will follow your site's formatting rules.
+                    </small>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group text-right">
+                    <a href="{{ url_for('admin.posts') }}" class="btn btn-secondary mr-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Add Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

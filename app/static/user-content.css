@@ -1,0 +1,43 @@
+/* app/static/css/user-content.css */
+
+/* User-generated content styling */
+.user-content {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+/* Headings inside user content */
+.user-content h1, .user-content h2, .user-content h3, 
+.user-content h4, .user-content h5, .user-content h6 {
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+/* Bold, italic, underline */
+.user-content b, .user-content strong {
+  font-weight: bold;
+}
+.user-content i, .user-content em {
+  font-style: italic;
+}
+.user-content u {
+  text-decoration: underline;
+}
+
+/* Subscript and Superscript */
+.user-content sub {
+  font-size: 0.8em;
+  vertical-align: sub;
+}
+.user-content sup {
+  font-size: 0.8em;
+  vertical-align: super;
+}
+
+/* MathML */
+.user-content math {
+  font-size: 1.1rem;
+  color: #111827;
+}

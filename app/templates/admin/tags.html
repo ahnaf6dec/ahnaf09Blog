@@ -1,0 +1,141 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Manage Tags</h2>
+    <a href="{{ url_for('admin.add_tag') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Tag
+    </a>
+</div>
+
+<!-- SEARCH + FILTER + RESET -->
+<form method="GET" class="mb-4">
+    <div class="form-row">
+
+        <!-- SEARCH BY TAG NAME -->
+        <div class="col-md-3">
+            <input type="text"
+                   name="search_tag"
+                   class="form-control"
+                   placeholder="Search tag"
+                   value="{{ search_tag }}">
+        </div>
+
+        <!-- SEARCH BY POST TITLE/SLUG -->
+        <div class="col-md-3">
+            <input type="text"
+                   name="search_post"
+                   class="form-control"
+                   placeholder="Search blog title or slug"
+                   value="{{ search_post }}">
+        </div>
+
+        <!-- FILTER DROPDOWN -->
+        <div class="col-md-2">
+            <select name="filter" class="form-control">
+                <option value="">All Tags</option>
+                {% for t in all_tags %}
+                <option value="{{ t.id }}" {% if filter_tag_id == t.id %}selected{% endif %}>
+                    {{ t.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- RESET BUTTON -->
+        <div class="col-md-2">
+            <a href="{{ url_for('admin.tags') }}" class="btn btn-secondary w-100">
+                <i class="fas fa-sync-alt"></i> Reset
+            </a>
+        </div>
+
+        <!-- SEARCH BUTTON -->
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+    </div>
+</form>
+
+<!-- TAGS TABLE -->
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Tag Name</th>
+                    <th>Posts Count</th>
+                    <th width="150">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tag in tags.items %}
+                <tr>
+                    <td>{{ tag.id }}</td>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.posts|length }}</td>
+                    <td>
+                        <!-- EDIT TAG -->
+                        <a href="{{ url_for('admin.edit_tag', tag_id=tag.id) }}"
+                           class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                        <!-- DELETE TAG -->
+                        <form action="{{ url_for('admin.delete_tag', tag_id=tag.id) }}"
+                              method="POST" style="display:inline;">
+                            <button class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this tag?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No tags found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- PAGINATION -->
+        {% if tags.pages > 1 %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if tags.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('admin.tags', page=tags.prev_num, search_tag=search_tag, search_post=search_post, filter=filter_tag_id) }}">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for page_num in tags.iter_pages() %}
+                    {% if page_num %}
+                    <li class="page-item {% if page_num == tags.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.tags', page=page_num, search_tag=search_tag, search_post=search_post, filter=filter_tag_id) }}">
+                            {{ page_num }}
+                        </a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if tags.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('admin.tags', page=tags.next_num, search_tag=search_tag, search_post=search_post, filter=filter_tag_id) }}">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

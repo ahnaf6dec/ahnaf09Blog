@@ -1,0 +1,91 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+
+<div class="container mt-4">
+
+  <!-- PAGE HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>
+      <i class="fas fa-bullhorn text-primary"></i> Edit Alert
+    </h3>
+  </div>
+
+  <!-- EDIT ALERT CARD -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-edit"></i> Update Alert</h5>
+    </div>
+    <div class="card-body">
+
+      <form method="POST">
+
+        <!-- ALERT MESSAGE -->
+        <div class="form-group mb-3">
+          <label for="message"><strong>Alert Message</strong></label>
+          <textarea id="message" name="message" class="form-control user-content" rows="4" placeholder="Enter alert message..." required>{{ alert.message }}</textarea>
+          <small class="form-text text-muted">You can use <b>bold</b>, <i>italic</i>, <u>underline</u> or MathML here.</small>
+        </div>
+
+        <!-- ALERT TYPE -->
+        <div class="form-group mb-3">
+          <label for="alert_type"><strong>Alert Type</strong></label>
+          <select id="alert_type" name="alert_type" class="form-control">
+            <option value="primary" {% if alert.alert_type=='primary' %}selected{% endif %}>Primary</option>
+            <option value="success" {% if alert.alert_type=='success' %}selected{% endif %}>Success</option>
+            <option value="info" {% if alert.alert_type=='info' %}selected{% endif %}>Info</option>
+            <option value="warning" {% if alert.alert_type=='warning' %}selected{% endif %}>Warning</option>
+            <option value="danger" {% if alert.alert_type=='danger' %}selected{% endif %}>Danger</option>
+          </select>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="form-group d-flex justify-content-end">
+          <a href="{{ url_for('admin.alerts') }}" class="btn btn-secondary mr-2">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Update Alert
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- OPTIONAL STYLING -->
+<style>
+/* Card styling */
+.card {
+    border-radius: 12px;
+}
+
+/* Form controls */
+.user-content {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1f2937;
+    border-radius: 8px;
+}
+
+/* Bold, Italic, Underline */
+.user-content b, .user-content strong { font-weight: bold; }
+.user-content i, .user-content em { font-style: italic; }
+.user-content u { text-decoration: underline; }
+
+/* MathML support */
+.user-content math {
+    font-size: 1.1rem;
+    color: #111827;
+}
+
+/* Buttons hover */
+.btn-success:hover {
+    background-color: #218838;
+}
+</style>
+
+{% endblock %}

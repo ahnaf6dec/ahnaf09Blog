@@ -1,0 +1,97 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fas fa-bullhorn"></i> Manage Alerts</h3>
+  </div>
+
+  <!-- CREATE ALERT -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-light">
+      <strong>Create Alert</strong>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('admin.create_alert') }}">
+        <div class="form-group">
+          <label>Alert Message</label>
+          <textarea name="message" class="form-control user-content" rows="3" placeholder="Write alert message..." required></textarea>
+        </div>
+        <div class="form-group mt-3">
+          <label>Alert Type</label>
+          <select name="alert_type" class="form-control">
+            <option value="primary">Primary</option>
+            <option value="success">Success</option>
+            <option value="info" selected>Info</option>
+            <option value="warning">Warning</option>
+            <option value="danger">Danger</option>
+          </select>
+        </div>
+        <button class="btn btn-dark mt-3">
+          <i class="fas fa-plus"></i> Create Alert
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ALERT LIST -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-light">
+      <strong>Existing Alerts</strong>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th width="60%">Message</th>
+            <th>Type</th>
+            <th width="120">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alert in alerts %}
+          <tr>
+            <td class="user-content">
+              <div class="alert alert-{{ alert.alert_type }} mb-0 py-2">
+                {{ alert.message|safe }}
+              </div>
+            </td>
+            <td>
+              <span class="badge badge-secondary">{{ alert.alert_type }}</span>
+            </td>
+            <td>
+              <div class="d-flex gap-5">
+                <!-- DELETE ALERT -->
+                <form method="POST"
+                      action="{{ url_for('admin.delete_alert', id=alert.id) }}"
+                      style="display:inline;">
+                  <button class="btn btn-sm btn-outline-danger"
+                          onclick="return confirm('Delete this alert?')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+                <!-- EDIT ALERT -->
+                <a href="{{ url_for('admin.edit_alert', alert_id=alert.id) }}" 
+                   class="btn btn-sm btn-primary">
+                  <i class="fas fa-edit"></i> Edit
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3" class="text-center text-muted py-4">
+              No alerts found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

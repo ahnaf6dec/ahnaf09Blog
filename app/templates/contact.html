@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <!-- Contact Card -->
+      <div class="card shadow-sm contact-card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><i class="fas fa-envelope"></i> Contact Us</h4>
+        </div>
+        <div class="card-body">
+          
+          <!-- Intro Text -->
+          <p class="mb-4 text-muted">
+            Have an issue with a user, need to report a bug, or want to give feedback about the website? 
+            Fill out the form below and the admin will contact you via email.
+          </p>
+
+          <!-- Form -->
+          <form method="POST">
+            
+            <div class="form-group mb-3">
+              <label for="email"><strong>Your Email</strong></label>
+              <input type="email" 
+                     class="form-control" 
+                     id="email" 
+                     name="email" 
+                     placeholder="Enter your email" 
+                     required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="message"><strong>Message</strong></label>
+              <textarea class="form-control" 
+                        id="message" 
+                        name="message" 
+                        rows="6" 
+                        placeholder="Type your message here..." 
+                        required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block send-btn">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- ================== Display Submitted Messages ================== -->
+      {% if contacts %}
+      <div class="mt-4">
+        <h5>Previous Messages</h5>
+        {% for contact in contacts %}
+          <div class="card mb-3 shadow-sm user-content">
+            <div class="card-body">
+              <p><strong>Email:</strong> {{ contact.email }}</p>
+              <p><strong>Message:</strong> {{ contact.message|safe }}</p>
+              <p class="text-muted small"><i class="fas fa-clock"></i> {{ contact.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<!-- STYLES -->
+<style>
+/* Card Styling */
+.contact-card {
+  border-radius: 12px;
+  background-color: #f8fafc;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.contact-card .card-header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+/* Intro text */
+.contact-card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Inputs */
+.contact-card .form-control {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.contact-card .form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Button */
+.send-btn {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.25s, transform 0.2s;
+}
+.send-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Full width */
+.btn-block {
+  width: 100%;
+}
+
+/* User-generated content styling for messages */
+.user-content {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1f2937;
+}
+
+.user-content b, .user-content strong {
+    font-weight: bold;
+}
+.user-content i, .user-content em {
+    font-style: italic;
+}
+.user-content u {
+    text-decoration: underline;
+}
+.user-content sub {
+    font-size: 0.8em;
+    vertical-align: sub;
+}
+.user-content sup {
+    font-size: 0.8em;
+    vertical-align: super;
+}
+.user-content math {
+    font-size: 1.1rem;
+    color: #111827;
+}
+
+/* Responsive padding */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+</style>
+
+{% endblock %}

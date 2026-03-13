@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+  <!-- SIDEBAR -->
+  <div class="admin-sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+      <i class="fas fa-user-shield"></i> Admin Panel
+      <span class="close-btn" id="closeSidebar">&times;</span>
+    </div>
+
+    <ul class="sidebar-menu">
+
+      <li>
+        <a href="{{ url_for('admin.dashboard') }}">
+          <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ url_for('admin.posts') }}">
+          <i class="fas fa-newspaper"></i> Posts
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ url_for('admin.categories') }}">
+          <i class="fas fa-folder"></i> Categories
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ url_for('admin.tags') }}">
+          <i class="fas fa-tag"></i> Tags
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ url_for('admin.users') }}">
+          <i class="fas fa-users"></i> Users
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ url_for('admin.contacts') }}">
+          <i class="fas fa-envelope"></i> Contacts
+        </a>
+      </li>
+
+
+      <li>
+        <a href="{{ url_for('admin.comments') }}">
+          <i class="fas fa-comments"></i> Comments
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('admin.alerts') }}">
+        <i class="fas fa-bullhorn"></i> Alerts
+        </a>
+        </li>
+      
+        <li>
+          <a href="{{ url_for('admin.about') }}">
+            <i class="fas fa-id-card"></i> About
+          </a>
+        </li>
+
+
+
+      <hr class=" border-bottom border-danger">
+      <li>
+        <a href="/" target="_blank">
+          <i class="fas fa-home"></i> Home
+        </a>
+      </li>
+
+      <li class="logout">
+        <a href="{{ url_for('auth.logout') }}">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+
+    </ul>
+
+  </div>
+
+  <!-- MOBILE TOGGLE BUTTON -->
+  <button class="sidebar-toggle" id="openSidebar">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-content">
+    {% block admin_content %}
+    {% endblock %}
+  </div>
+
+</div>
+
+<style>
+/* ===== Wrapper ===== */
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+/* ===== Sidebar ===== */
+.admin-sidebar {
+  width: 250px;
+  background: #111827;
+  color: white;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  /* margin-right: 20px; */
+  /* z-index: 1000; */
+  /* margin-top: 50px; */
+}
+
+.sidebar-header {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 20px;
+  border-bottom: 1px solid #1f2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.sidebar-menu li {
+  margin: 5px 0;
+}
+
+.sidebar-menu a {
+  display: block;
+  padding: 12px 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.sidebar-menu a:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.sidebar-menu .logout a {
+  color: #f87171;
+}
+
+/* ===== Main Content ===== */
+.admin-content {
+  margin-left: 250px;
+  flex: 1;
+  padding: 30px;
+  transition: margin-left 0.3s ease;
+}
+
+/* ===== Cards ===== */
+.card {
+  border-radius: 10px;
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    left: -260px; /* hide sidebar by default */
+  }
+
+  .sidebar-header .close-btn {
+    display: block;
+    color: white;
+  }
+
+  .sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    z-index: 1100;
+    cursor: pointer;
+  }
+
+  .admin-content {
+    margin-left: 0;
+  }
+
+  .sidebar-open {
+    left: 0 !important;
+  }
+}
+
+/* Scrollbar */
+.admin-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+</style>
+
+<script>
+// Mobile sidebar toggle
+const sidebar = document.getElementById('sidebar');
+const openBtn = document.getElementById('openSidebar');
+const closeBtn = document.getElementById('closeSidebar');
+
+openBtn.addEventListener('click', () => {
+  sidebar.classList.add('sidebar-open');
+});
+
+closeBtn.addEventListener('click', () => {
+  sidebar.classList.remove('sidebar-open');
+});
+</script>
+
+{% endblock %}

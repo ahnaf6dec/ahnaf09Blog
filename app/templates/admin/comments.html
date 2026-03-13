@@ -1,0 +1,116 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+
+<h2 class="mb-4">
+    <i class="fas fa-comments"></i> Manage Comments
+</h2>
+
+<!-- SEARCH -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="form-inline">
+            <input type="text"
+                   name="search"
+                   value="{{ search }}"
+                   class="form-control mr-2 mb-2"
+                   placeholder="Search by username or comment">
+            <button class="btn btn-primary mr-2 mb-2">
+                <i class="fas fa-search"></i> Search
+            </button>
+            <a href="{{ url_for('admin.comments') }}"
+               class="btn btn-secondary mb-2">
+               Reset
+            </a>
+        </form>
+    </div>
+</div>
+
+<!-- COMMENTS TABLE -->
+<div class="card shadow-sm">
+    <div class="card-body table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Post</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in comments.items %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.user.username if comment.user else 'Anonymous' }}</td>
+                    <td>{{ comment.user.email if comment.user else '—' }}</td>
+                    <td>{{ comment.post.title if comment.post else '—' }}</td>
+                    <td class="user-content">{{ comment.content|safe }}</td>
+                    <td>{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <form method="POST"
+                              action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}"
+                              style="display:inline-block;"
+                              onsubmit="return confirm('Delete this comment?');">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">
+                        No comments found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PAGINATION -->
+{% if comments.pages > 1 %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if comments.has_prev %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('admin.comments', page=comments.prev_num, search=search) }}">
+               Previous
+            </a>
+        </li>
+        {% endif %}
+
+        {% for page_num in comments.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+            {% if page_num %}
+            <li class="page-item {% if page_num==comments.page %}active{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('admin.comments', page=page_num, search=search) }}">
+                   {{ page_num }}
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">…</span>
+            </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if comments.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('admin.comments', page=comments.next_num, search=search) }}">
+               Next
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

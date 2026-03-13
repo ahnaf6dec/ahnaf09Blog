@@ -1,0 +1,76 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+<div class="container mt-4">
+  <div class="row">
+
+    <!-- FORM COLUMN -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h4><i class="fas fa-user"></i> Edit About Section</h4>
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            <!-- Avatar URL -->
+            <div class="form-group mb-3">
+              <label><i class="fas fa-image"></i> Avatar URL</label>
+              <input type="text" name="avatar_url" class="form-control" 
+                     placeholder="Enter avatar URL" value="{{ about.avatar_url if about else '' }}" required>
+            </div>
+
+            <!-- Name -->
+            <div class="form-group mb-3">
+              <label><i class="fas fa-user"></i> Name</label>
+              <input type="text" name="name" class="form-control" 
+                     placeholder="Enter name" value="{{ about.name if about else '' }}" required>
+            </div>
+
+            <!-- Short Bio -->
+            <div class="form-group mb-3">
+              <label><i class="fas fa-align-left"></i> Short Bio</label>
+              <textarea name="bio" class="form-control" rows="4" placeholder="Enter short bio" required>{{ about.bio if about else '' }}</textarea>
+            </div>
+
+            <!-- Social Link -->
+            <div class="form-group mb-3">
+              <label><i class="fas fa-link"></i> Social Link</label>
+              <input type="text" name="social_link" class="form-control" 
+                     placeholder="Enter social link" value="{{ about.social_link if about else '' }}">
+            </div>
+
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW COLUMN -->
+    <!-- ABOUT SECTION -->
+<div class="card mb-4 sidebar-card border">
+    <div class="card-header bg-light text-dark">
+      <h5 class="mb-0"><i class="fas fa-user"></i> About Me</h5>
+    </div>
+    <div class="card-body text-center">
+      {% if about %}
+        <img src="{{ about.avatar_url }}" alt="Avatar" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
+        <h5 class="mb-1">{{ about.name }}</h5>
+        <p class="text-muted small mb-2 user-content" style="font-size: 14px;">{{ about.bio|safe }}</p>
+        {% if about.social_link %}
+          <a href="https://{{ about.social_link }}" target="_blank" class="btn btn-primary btn-sm">
+            <i class="fas fa-link"></i> Connect
+          </a>
+        {% endif %}
+      {% else %}
+        <p class="text-muted">About section not set.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<!-- OPTIONAL STYLES -->
+{% endblock %}
