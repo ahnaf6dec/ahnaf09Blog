@@ -50,3 +50,4 @@ Deployment: Render
 
 **Security**
 Keep credentials and secret keys private. Use `.env` for sensitive info.
+https://github.com/ahnaf6dec/sec-cred
